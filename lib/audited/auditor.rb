@@ -44,8 +44,8 @@ module Audited
       #     end
       #
       def audited(options = {})
-        # don't allow multiple calls
-        return if self.included_modules.include?(Audited::Auditor::AuditedInstanceMethods)
+        # don't allow multiple calls; check to make sure the table has been created
+        return if !self.table_exists? or self.included_modules.include?(ActsAsAudited::Auditor::InstanceMethods)
 
         class_attribute :non_audited_columns,   :instance_writer => false
         class_attribute :auditing_enabled,      :instance_writer => false
